@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.sun.tools.javac.util.Log;
 
 
 public class Player {
@@ -51,18 +50,12 @@ public class Player {
         this.x = x;
         box.setX(x);
         sprite.setX(x);
-
-        DatabaseTest.sendXYToDB(x, y);
-        System.out.println("POSITION ====================== " + x + "/" + y);
     }
 
     public void setY(float y) {
         this.y = y;
         box.setY(y);
         sprite.setY(y);
-
-        DatabaseTest.sendXYToDB(x, y);
-        System.out.println("POSITION ====================== " + x + "/" + y);
     }
 
     public float getX() {

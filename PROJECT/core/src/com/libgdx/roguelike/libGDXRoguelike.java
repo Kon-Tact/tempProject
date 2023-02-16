@@ -35,6 +35,13 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
     int speed = 80;
     int calculatedWidth =0;
     int calculatedHeight =0;
+
+    FirebaseInterface _FBIC;
+
+    public libGDXRoguelike(FirebaseInterface FBIC) {
+        _FBIC = FBIC;
+    }
+
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -100,6 +107,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.checkSprite("LEFT");
             System.out.println("LEFT");
             player.setX(player.getX() - speed);
+            _FBIC.sendXToDB(player.getX());
+            System.out.println("POSITION ====================== " + player.getX());
             if(player.getX()<SCREEN_WIDTH*1/4) {
                 if(camera.position.x<SCREEN_WIDTH*1/4){
                     if(player.getX()>0) {
@@ -115,6 +124,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.checkSprite("RIGHT");
             System.out.println("RIGHT");
             player.setX(player.getX() + speed);
+            _FBIC.sendXToDB(player.getX());
+            System.out.println("POSITION ====================== " + player.getX());
             if(player.getX()>SCREEN_WIDTH*3/4) {
                 if(camera.position.x>calculatedWidth-SCREEN_WIDTH*1/4){
                     if(player.getX()<SCREEN_WIDTH) {
@@ -130,6 +141,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.checkSprite("UP");
             System.out.println("UP");
             player.setY(player.getY() + speed);
+            _FBIC.sendYToDB(player.getY());
+            System.out.println("POSITION ====================== " + player.getY());
             if(player.getY()>SCREEN_HEIGHT*3/4) {
                 if(camera.position.y>calculatedHeight-SCREEN_HEIGHT*1/4){
                     if(player.getY()<SCREEN_HEIGHT) {
@@ -149,6 +162,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
                 if(camera.position.y<SCREEN_HEIGHT*1/4){
                     if(player.getY()>0) {
                         player.setY(player.getY() + speed);
+                        _FBIC.sendYToDB(player.getY());
+                        System.out.println("POSITION ====================== " + player.getY());
                     }
                 }else{
                     player.setY(player.getY() + speed);

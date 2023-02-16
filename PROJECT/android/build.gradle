@@ -1,3 +1,4 @@
+apply plugin: 'com.google.gms.google-services'
 android {
     buildToolsVersion "33.0.1"
     compileSdkVersion 33
@@ -83,6 +84,11 @@ task run(type: Exec) {
 
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.libgdx.roguelike/com.libgdx.roguelike.AndroidLauncher'
+}
+
+dependencies {
+    implementation 'com.google.firebase:firebase-firestore:24.1.1'
+
 }
 
 eclipse.project.name = appName + "-android"

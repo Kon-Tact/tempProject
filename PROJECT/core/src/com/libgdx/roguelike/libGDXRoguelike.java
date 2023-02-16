@@ -37,15 +37,14 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
     int calculatedHeight =0;
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+       // viewport.update(width, height);
     }
     @Override
     public void create() {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
         camera = new OrthographicCamera();
-        //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, 800,600);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
         tiledMap = new TmxMapLoader().load("sampleMap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);

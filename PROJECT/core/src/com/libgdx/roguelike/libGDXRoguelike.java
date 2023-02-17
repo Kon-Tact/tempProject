@@ -18,6 +18,14 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class libGDXRoguelike extends ApplicationAdapter implements InputProcessor {
@@ -31,12 +39,16 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
     TextureAtlas textureAtlas;
     Sprite playerSprite;
     Player player;
+
+    Mates[] mates = new Mates[3];
     TextureRegion textureRegion;
     int speed = 80;
     int calculatedWidth =0;
     int calculatedHeight =0;
 
     FirebaseInterface _FBIC;
+
+
 
     public libGDXRoguelike(FirebaseInterface FBIC) {
         _FBIC = FBIC;
@@ -48,6 +60,18 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
     }
     @Override
     public void create() {
+        //public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+        ExecutorService executorService = new ThreadPoolExecutor(mates.length, mates.length, 1000,
+                TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+
+        for(int i =0 ; i < mates.length ; i++){
+            mates[i] = new Mates();
+            executorService.submit(mates[i]);
+        }
+        System.out.println("Fin thread principal");
+
+
+
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
         camera = new OrthographicCamera();
@@ -107,7 +131,7 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             System.out.println("LEFT");
             player.setX(player.getX() - speed);
             _FBIC.sendXToDB(player.getX());
-            System.out.println("POSITION ====================== " + player.getX());
+            _FBIC.cameraX(camera.position.x);
             if(player.getX()<SCREEN_WIDTH*1/4) {
                 if(camera.position.x<SCREEN_WIDTH*1/4){
                     if(player.getX()>0) {
@@ -124,7 +148,7 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             System.out.println("RIGHT");
             player.setX(player.getX() + speed);
             _FBIC.sendXToDB(player.getX());
-            System.out.println("POSITION ====================== " + player.getX());
+            _FBIC.cameraX(camera.position.x);
             if(player.getX()>SCREEN_WIDTH*3/4) {
                 if(camera.position.x>calculatedWidth-SCREEN_WIDTH*1/4){
                     if(player.getX()<SCREEN_WIDTH) {
@@ -141,7 +165,7 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             System.out.println("UP");
             player.setY(player.getY() + speed);
             _FBIC.sendYToDB(player.getY());
-            System.out.println("POSITION ====================== " + player.getY());
+            _FBIC.cameraY(camera.position.y);
             if(player.getY()>SCREEN_HEIGHT*3/4) {
                 if(camera.position.y>calculatedHeight-SCREEN_HEIGHT*1/4){
                     if(player.getY()<SCREEN_HEIGHT) {
@@ -157,6 +181,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.checkSprite("DOWN");
             System.out.println("DOWN");
             player.setY(player.getY() - speed);
+            _FBIC.sendYToDB(player.getY());
+            _FBIC.cameraY(camera.position.y);
             if(player.getY()<SCREEN_HEIGHT*1/4) {
                 if(camera.position.y<SCREEN_HEIGHT*1/4){
                     if(player.getY()>0) {

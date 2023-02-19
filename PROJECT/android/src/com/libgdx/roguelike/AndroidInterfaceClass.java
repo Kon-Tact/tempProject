@@ -1,31 +1,42 @@
 package com.libgdx.roguelike;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AndroidInterfaceClass implements FirebaseInterface {
     FirebaseFirestore db;
-    DocumentReference myRef;
-    Map<String, Object> xPlayer = new HashMap<>();
-    Map<String, Object> yPlayer = new HashMap<>();
-    Map<String, Object> xCam = new HashMap<>();
-    Map<String, Object> yCam = new HashMap<>();
-    Map<String, Object> user = new HashMap<>();
+    DocumentReference refCoorX, refCoorY, refCamX, refCamY;
+    Map<String, Object> playX = new HashMap<>();
+    Map<String, Object> playY = new HashMap<>();
+    Map<String, Object> CamX = new HashMap<>();
+    Map<String, Object> CamY = new HashMap<>();
+
+
 
     private float myX, myY, myCamX, myCamY;
 
     public AndroidInterfaceClass() {
         db = FirebaseFirestore.getInstance();
-        myRef = db.collection("coorPlayer").document("Maposition");
+        refCoorX = db.collection("coorPlayer").document("PlayerPosX");
+        refCoorY = db.collection("coorPlayer").document("PlayerPosY");
+        refCamX = db.collection("coorCam").document("CamPosX");
+        refCamY = db.collection("coorCam").document("CamPosY");
     }
 
 
@@ -33,9 +44,9 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     public void sendXToDB(float x) {
         myX = x;
 
-        user.put("X : ", x);
+        playX.put("playerPosX ", x);
 
-        myRef.set(user)
+        refCoorX.set(playX)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -55,9 +66,9 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     public void sendYToDB(float y) {
         myY = y;
 
-        user.put("Y : ", y);
+        playY.put("PlayerPosY ", y);
 
-        myRef.set(user)
+        refCoorY.set(playY)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -78,9 +89,9 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     public void cameraX(float x) {
         myCamX = x;
 
-        user.put("Camera X : ", x);
+        CamX.put("camPosX ", x);
 
-        myRef.set(user)
+        refCamX.set(CamX)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -101,9 +112,9 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     public void cameraY(float y) {
         myCamY = y;
 
-        user.put("Camera Y : ", y);
+        CamY.put("camPosY ", y);
 
-        myRef.set(user)
+        refCamY.set(CamY)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -121,12 +132,68 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     }
 
     @Override
-    public void getCoorX() {
+    public int getCoorX() {
 
+        final int[] returnX = {0};
+        refCoorX.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                Log.d("TAG", "Document Snapshot data: " + doc.getData());
+                                String value = String.valueOf(doc.getData().values());
+                                Matcher matcher = Pattern.compile("\\d+").matcher(value);
+                                if ( matcher.find() ) {
+                                    returnX[0] = Integer.parseInt(matcher.group(0));
+                                    System.out.println("Coor Y dans la méthode " + returnX[0]);
+                                }
+                                else {
+                                    System.out.println("Cette valeur n'existe pas");
+                                }
+                            } else {
+                                Log.d("TAG", "Ce document n'existe pas");
+                            }
+                        } else {
+                            Log.w("TAG", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        return returnX[0];
     }
 
     @Override
-    public void getCoorY() {
+    public int getCoorY() {
 
+        final int[] returnY = {0};
+        refCoorY.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                Log.d("TAG", "Document Snapshot data: " + doc.getData());
+                                String value = String.valueOf(doc.getData().values());
+                                System.out.println(value);
+                                Matcher matcher = Pattern.compile("\\d+").matcher(value);
+                                if ( matcher.find() ) {
+                                    returnY[0] = Integer.parseInt(matcher.group(0));
+                                    System.out.println("Coor Y dans la méthode " + returnY[0]);
+                                }
+                                else {
+                                    System.out.println("Cette valeur n'existe pas");
+                                }
+
+                            } else {
+                                Log.d("TAG", "No such document");
+                            }
+                        } else {
+                            Log.w("TAG", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+        return returnY[0];
     }
 }

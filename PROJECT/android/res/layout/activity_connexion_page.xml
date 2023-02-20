@@ -22,8 +22,8 @@
       android:layout_width="300dp"
       android:layout_height="50dp"
       android:ems="10"
-      android:inputType="textPersonName"
       android:hint="Pseudo"
+      android:inputType="textPersonName"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.498"
@@ -35,10 +35,19 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="270dp"
-      android:layout_marginBottom="8dp"
       android:text="Pseudo"
-      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-      android:theme="@style/TextAppearance.AppCompat.Medium"
       app:layout_constraintBottom_toTopOf="@+id/etPseudo"
       app:layout_constraintEnd_toEndOf="@+id/etPseudo" />
+
+  <ImageView
+      android:id="@+id/imageView2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toTopOf="@+id/tvPseudo"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:srcCompat="@drawable/ic_launcher" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

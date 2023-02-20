@@ -31,7 +31,7 @@ public class ConnexionPage extends AppCompatActivity {
                 pseudoPlayer = etPseudo.getText().toString();
                 Toast.makeText(ConnexionPage.this, "Vous avez été enregistré sous le pseudo "
                         + pseudoPlayer + ".", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ConnexionPage.this, AndroidLauncher.class));
+                startActivity(new Intent(ConnexionPage.this, ModeSelection.class));
 
             } else {
                 Toast.makeText(ConnexionPage.this, "Merci d'entrer un pseudo",

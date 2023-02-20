@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -26,8 +27,6 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     Map<String, Object> playY = new HashMap<>();
     Map<String, Object> CamX = new HashMap<>();
     Map<String, Object> CamY = new HashMap<>();
-
-
 
     private float myX, myY, myCamX, myCamY;
 
@@ -132,7 +131,7 @@ public class AndroidInterfaceClass implements FirebaseInterface {
     }
 
     @Override
-    public int getCoorX() {
+    public float getCoorX(float x) {
 
         final int[] returnX = {0};
         refCoorX.get()
@@ -160,11 +159,11 @@ public class AndroidInterfaceClass implements FirebaseInterface {
                         }
                     }
                 });
-        return returnX[0];
+        return x = returnX[0];
     }
 
     @Override
-    public int getCoorY() {
+    public float getCoorY(float y) {
 
         final int[] returnY = {0};
         refCoorY.get()
@@ -194,6 +193,6 @@ public class AndroidInterfaceClass implements FirebaseInterface {
                         }
                     }
                 });
-        return returnY[0];
+        return y = returnY[0];
     }
 }

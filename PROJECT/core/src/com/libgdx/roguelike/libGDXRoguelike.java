@@ -18,11 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +43,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
     int calculatedHeight =0;
 
     FirebaseInterface _FBIC;
+    float gettiX = 0.0f;
+    float gettiY = 0.0f;
 
 
 
@@ -132,8 +130,9 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.setX(player.getX() - speed);
             _FBIC.sendXToDB(player.getX());
             _FBIC.cameraX(camera.position.x);
-            System.out.println("Coordonnées X reccupérées de Firestore : " + _FBIC.getCoorX());
-            if(player.getX()<SCREEN_WIDTH*1/4) {
+            gettiX = _FBIC.getCoorX(gettiX);
+            System.out.println("Coordonnées X reccupérées de Firestore : " + gettiX);
+            if(player.getX()< SCREEN_WIDTH /4) {
                 if(camera.position.x<SCREEN_WIDTH*1/4){
                     if(player.getX()>0) {
                         player.setX(player.getX() + speed);
@@ -150,7 +149,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.setX(player.getX() + speed);
             _FBIC.sendXToDB(player.getX());
             _FBIC.cameraX(camera.position.x);
-            System.out.println("Coordonnées X reccupérées de Firestore : " + _FBIC.getCoorX());
+            gettiX = _FBIC.getCoorX(gettiX);
+            System.out.println("Coordonnées X reccupérées de Firestore : " + gettiX);
             if(player.getX()>SCREEN_WIDTH*3/4) {
                 if(camera.position.x>calculatedWidth-SCREEN_WIDTH*1/4){
                     if(player.getX()<SCREEN_WIDTH) {
@@ -168,7 +168,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.setY(player.getY() + speed);
             _FBIC.sendYToDB(player.getY());
             _FBIC.cameraY(camera.position.y);
-            System.out.println("Coordonnées Y reccupérées de Firestore : " + _FBIC.getCoorY());
+            gettiY = _FBIC.getCoorY(gettiY);
+            System.out.println("Coordonnées X reccupérées de Firestore : " + gettiY);
             if(player.getY()>SCREEN_HEIGHT*3/4) {
                 if(camera.position.y>calculatedHeight-SCREEN_HEIGHT*1/4){
                     if(player.getY()<SCREEN_HEIGHT) {
@@ -186,7 +187,8 @@ public class libGDXRoguelike extends ApplicationAdapter implements InputProcesso
             player.setY(player.getY() - speed);
             _FBIC.sendYToDB(player.getY());
             _FBIC.cameraY(camera.position.y);
-            System.out.println("Coordonnées Y reccupérées de Firestore : " + _FBIC.getCoorY());
+            gettiY = _FBIC.getCoorY(gettiY);
+            System.out.println("Coordonnées X reccupérées de Firestore : " + gettiY);
             if(player.getY()<SCREEN_HEIGHT*1/4) {
                 if(camera.position.y<SCREEN_HEIGHT*1/4){
                     if(player.getY()>0) {

@@ -8,6 +8,6 @@ public interface FirebaseInterface {
     void cameraX (float x);
     void cameraY (float y);
 
-    int getCoorX();
-    int getCoorY();
+    float getCoorX(float x);
+    float getCoorY(float y);
 }

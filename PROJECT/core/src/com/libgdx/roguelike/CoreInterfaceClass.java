@@ -20,14 +20,12 @@ public class CoreInterfaceClass implements FirebaseInterface{
     }
 
     @Override
-    public int getCoorX() {
-        final int[] returnX = {0};
-        return returnX[0];
+    public float getCoorX(float x) {;
+        return x;
     }
 
     @Override
-    public int getCoorY() {
-        final int[] returnY = {0};
-        return returnY[0];
+    public float getCoorY(float y) {
+        return y;
     }
 }
